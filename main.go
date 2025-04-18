@@ -65,7 +65,10 @@ func fetchBrasilAPI(cep string, ch chan<- ResultadoBrasilAPI) {
 	body, _ := io.ReadAll(resp.Body)
 	var data EnderecoBrasilAPI
 	err = json.Unmarshal(body, &data)
-
+	if err != nil {
+		ch <- ResultadoBrasilAPI{Err: err}
+		return
+	}
 	// time.Sleep(2 * time.Second)
 	ch <- ResultadoBrasilAPI{Data: data}
 }
@@ -82,7 +85,10 @@ func fetchViaCEP(cep string, ch chan<- ResultadoViaCep) {
 	body, _ := io.ReadAll(resp.Body)
 	var data EnderecoViaCep
 	err = json.Unmarshal(body, &data)
-
+	if err != nil {
+		ch <- ResultadoViaCep{Err: err}
+		return
+	}
 	// time.Sleep(2 * time.Second)
 	ch <- ResultadoViaCep{Data: data}
 }
